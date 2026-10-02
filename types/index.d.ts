@@ -60,7 +60,7 @@ declare global {
   }
 
   interface PropertyOverviewProps {
-    propertyId: number;
+    propertyId: string;
   }
 
   interface ApplicationModalProps {
@@ -78,7 +78,7 @@ declare global {
   }
 
   interface PropertyDetailsProps {
-    propertyId: number;
+    propertyId: string;
   }
 
   interface PropertyOverviewProps {
@@ -134,6 +134,28 @@ declare global {
     cognitoInfo: AuthUser;
     userInfo: Tenant | Manager;
     userRole: JsonObject | JsonPrimitive | JsonArray;
+  }
+  export interface FavouriteProperty {
+    _id: string;
+    name: string;
+    description: string;
+    pricePerMonth: string; // ملاحظة: نصوص سياقية بالرغم من أنها تعبر عن سعر، بناءً على الـ Response
+  }
+
+  export interface Tenant {
+    _id: string;
+    name: string;
+    email: string;
+    phoneNumber: string;
+  }
+
+  export interface UserFavouritesResponse {
+    _id: string;
+    favourites: FavouriteProperty[];
+    tenant: Tenant;
+    createdAt: string;
+    updatedAt: string;
+    __v: number;
   }
 }
 

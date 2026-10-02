@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         if (authUser) {
-            const userRole = authUser?.user?.role.toLowerCase();
+            const userRole = authUser?.data?.user?.role.toLowerCase();
             if (
                 (userRole === "manager" && pathname.startsWith("/tenants")) ||
                 (userRole === "tenant" && pathname.startsWith("/managers"))
@@ -46,7 +46,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 />
             </div>)
     }
-    if (!authUser?.user.role) { return null }
+    if (!authUser?.data.user.role) { return null }
 
     return (
         <SidebarProvider>
@@ -54,7 +54,7 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
                 <Navbar />
                 <div style={{ paddingTop: `${NAVBAR_HEIGHT}px` }}>
                     <main className='flex'>
-                        <AppSidebar userType={authUser?.user.role.toLowerCase()} />
+                        <AppSidebar userType={authUser?.data.user.role.toLowerCase()} />
                         <div className='grow transition-all duration-300'>
                             {children}
                         </div>

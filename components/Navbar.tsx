@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { NAVBAR_HEIGHT } from '../lib/constants'
 import Link from 'next/link'
 import { Button } from './ui/button'
-import { useGetAuthUserMutation, useGetUserQuery } from '@/state/Auth/AuthSlice'
+import { useGetUserQuery } from '@/state/Auth/AuthSlice'
 import { useRouter } from 'next/navigation'
 import { usePathname } from 'next/navigation'
 import { Bell, MessageCircle, Plus, Search } from 'lucide-react'
@@ -65,7 +65,7 @@ const Navbar = () => {
                 return (
                   router.push(userInfo?.role.toLowerCase() === "manager"
                     ? "/managers/newproperty"
-                    : "/serach"
+                    : "/search"
                   ))
               }
               }

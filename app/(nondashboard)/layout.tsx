@@ -34,7 +34,6 @@ const Layout = ({ children }:{ children: React.ReactNode }) => {
     <div className="h-full w-full ">
       <Navbar/>
       <main className="h-full flex w-full flex-col pt-[${NAVBAR_HEIGHT}px]"
-            style={{ paddingTop: `${NAVBAR_HEIGHT}px` }}
         >
         {children}
       </main>
