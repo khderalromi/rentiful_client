@@ -52,7 +52,14 @@ export const adminsApi = createApi({
       return headers;
     },
   }),
-  tagTypes: ["Users", "Properties", "Tenants","PropertyDtails"],
+  tagTypes: [
+    "Users",
+    "Properties",
+    "Tenants",
+    "PropertyDtails",
+    "Leases",
+    "Payments",
+  ],
   endpoints: (builder) => ({
     /*fetchUsers: builder.query<any, void>({
       query: () => "/login",
@@ -98,14 +105,18 @@ export const adminsApi = createApi({
       invalidatesTags: (result) => [{ type: "Users", id: result?._id }],
     }),
 
+    //Proerty related endpoints
+    
+
     getProperties: builder.query<
       any,
       Partial<FiltersState> & { favouriteIds?: number[] }
     >({
       query: (filters) => {
-        const latlngParam = filters.coordinates?.length === 2 
-      ? `${filters.coordinates[1]},${filters.coordinates[0]}` 
-      : undefined;
+        const latlngParam =
+          filters.coordinates?.length === 2
+            ? `${filters.coordinates[1]},${filters.coordinates[0]}`
+            : undefined;
         const params = cleanParams({
           city: filters.city,
           priceMin: filters.priceRange?.[0],
@@ -121,7 +132,7 @@ export const adminsApi = createApi({
           availableFrom: filters.availableFrom,
           favouriteId: filters.favouriteIds?.join(","),
           latlng: latlngParam,
-          distance: latlngParam ? 200 : undefined, 
+          distance: latlngParam ? 200 : undefined,
           unit: latlngParam ? "km" : undefined,
         });
         return { url: "properties/filter", params };
@@ -140,14 +151,14 @@ export const adminsApi = createApi({
     }),
 
     getProperty: builder.query<any, { propertyId: string }>({
-      query: ( {propertyId} ) => ({
+      query: ({ propertyId }) => ({
         url: `/properties/property/${propertyId}`,
-        method: "GET"
+        method: "GET",
       }),
-      providesTags: (result , error, _id) => {
+      providesTags: (result, error, _id) => {
         console.log(error);
         return [{ type: "PropertyDtails", _id }];
-      }
+      },
     }),
 
     addFavouriteProperty: builder.mutation<any, { propertyId: string }>({
@@ -178,18 +189,107 @@ export const adminsApi = createApi({
         ];
       },
     }),
+
+    //Manager related Endpoints
+    
+    createProperty: builder.mutation<Partial<Property> ,FormData >({
+      
+      query: (NewProperty) => ({
+        url: "/properties/create",
+        method: "POST",
+        body: NewProperty,
+      }),
+
+      invalidatesTags: (result) => { console.log("gggggggg"+ FormData)
+        return [{ type: "Properties", id: result?._id }]
+      }
+    }),
+
+    getManagerProperties: builder.query<any, void>({
+      query: () => ({
+        url: `/properties/manager_properties`,
+        method: "GET",
+      }),
+
+      providesTags: (result) =>
+        Array.isArray(result)
+          ? [
+              ...result.map((item) => ({
+                type: "Properties" as const,
+                _id: item._id,
+              })),
+              { type: "Properties", id: "LIST" },
+            ]
+          : [{ type: "Properties", id: "LIST" }],
+    }),
+
+    
+    getLeasesProperty: builder.query<any, { propertyId: string }>({
+      query: ({ propertyId }) => ({
+        url: `/properties/${propertyId}/leases`,
+        method: "GET",
+        providesTags: ["Leases"],
+      }),
+    }),
+    //lease related endpoints
+    getTenantLeases: builder.query<any, void>({
+      query: () => ({
+        url: `/leases/tenantLeases`,
+        method: "GET",
+      }),
+
+      providesTags: (result) =>
+        Array.isArray(result)
+          ? [
+              ...result.map(({id}) => ({
+                type: "Properties" as const,
+                id,
+              })),
+              { type: "Properties", id: "LIST" },
+            ]
+          : [{ type: "Properties", id: "LIST" }],
+    }),
+
+    getLeasesPropertyByUser: builder.query<any, { propertyId: string }>({
+      query: ({ propertyId }) => ({
+        url: `/properties/${propertyId}/leasesPropertyByUser`,
+        method: "GET",
+        providesTags: ["Leases"],
+      }),
+    }),
+
+    getPayments: builder.query<any, { leaseId: string }>({
+      query: ({ leaseId }) => ({
+        url: `/payments/${leaseId}/payments/all`,
+        method: "GET",
+        providesTags: ["Payments"],
+      }),
+    }),
+    
+    getPaymentsProperty: builder.query<any, { propertyId: string }>({
+      query: ({ propertyId }) => ({
+        url: `/payments/${propertyId}/payments-property`,
+        method: "GET",
+        providesTags: ["Payments"],
+      }),
+    }),
   }),
 });
 
 export const {
   useSignUpUserMutation,
   useLoginUserMutation,
-
   useGetUserQuery,
   useUpdateAuthUserMutation,
   useGetPropertiesQuery,
   useGetPropertyQuery,
   useAddFavouritePropertyMutation,
   useRemoveFavouritePropertyMutation,
- 
+  useGetManagerPropertiesQuery,
+  useCreatePropertyMutation,
+  useGetLeasesPropertyQuery,
+  useGetTenantLeasesQuery,
+  useGetLeasesPropertyByUserQuery,
+  useGetPaymentsQuery,
+  useGetPaymentsPropertyQuery,
 } = adminsApi;

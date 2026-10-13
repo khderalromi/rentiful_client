@@ -69,7 +69,7 @@ export const createNewUserInDatabase = async (
     url: createEndpoint,
     method: "POST",
     body: {
-      cognitoId: user.userId,
+      //cognitoId: user.userId,
       name: user.username,
       email: idToken?.payload?.email || "",
       phoneNumber: "",

@@ -17,7 +17,10 @@ export interface Property {
   coordinates: {
     latitude: number;
     longitude: number;
-  }
+  },
+  locationId: string; 
+  manager: string; 
+  reviews?: string[]
 }
 
 export interface FiltersState {

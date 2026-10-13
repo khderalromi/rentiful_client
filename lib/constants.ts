@@ -134,3 +134,19 @@ export const testUsers = {
   },
   managerRole: "manager",
 };
+
+
+export const LOCATION_MAPPING: Record<string, Record<string, [number, number]>> = {
+  "Syria": {
+    "Damascus": [36.2765, 33.5138],
+    "Aleppo": [37.1611, 36.2021],
+    "Homs": [36.7118, 34.7324],
+    "Latakia": [35.7906, 35.5317],
+  },
+  "Jordan": {
+    "Amman": [35.9239, 31.9539],
+    "Irbid": [35.8500, 32.5556],
+    "Zarqa": [36.0842, 32.0836],
+  },
+  // يمكنك إضافة ما شئت من الدول والمدن هنا بسهولة
+};

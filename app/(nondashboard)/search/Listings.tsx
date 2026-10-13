@@ -1,5 +1,6 @@
 import Card from '@/components/Card';
 import CardCompact from '@/components/CardCompact';
+import LoadingComponent from '@/components/Loading';
 import { Property } from '@/state';
 import { useAddFavouritePropertyMutation, useGetPropertiesQuery, useGetUserQuery, useRemoveFavouritePropertyMutation } from '@/state/Auth/AuthSlice';
 import { useAppSelector } from '@/state/redux';
@@ -38,7 +39,7 @@ const Listings = () => {
     }
   }
 
-  if (isLoading) return <div>....loading</div>;
+  if (isLoading) return <LoadingComponent/>;
   if (isError || !properties) return <div>failed to fetch data</div>
   return (
     <div className='w-full'>

@@ -4,9 +4,9 @@ import { PropertyTypeEnum } from "@/lib/constants";
 export const propertySchema = z.object({
   name: z.string().min(1, "Name is required"),
   description: z.string().min(1, "Description is required"),
-  pricePerMonth: z.coerce.number().positive().min(0).int(),
-  securityDeposit: z.coerce.number().positive().min(0).int(),
-  applicationFee: z.coerce.number().positive().min(0).int(),
+  pricePerMonth: z.coerce.number().nonnegative().min(0).int(),
+  securityDeposit: z.coerce.number().nonnegative().min(0).int(),
+  applicationFee: z.coerce.number().nonnegative().min(0).int(),
   isPetsAllowed: z.boolean(),
   isParkingIncluded: z.boolean(),
   photoUrls: z
@@ -14,15 +14,17 @@ export const propertySchema = z.object({
     .min(1, "At least one photo is required"),
   amenities: z.string().min(1, "Amenities are required"),
   highlights: z.string().min(1, "Highlights are required"),
-  beds: z.coerce.number().positive().min(0).max(10).int(),
-  baths: z.coerce.number().positive().min(0).max(10).int(),
-  squareFeet: z.coerce.number().int().positive(),
+  beds: z.coerce.number().nonnegative().min(0).max(10).int(),
+  baths: z.coerce.number().nonnegative().min(0).max(10).int(),
+  squareFeet: z.coerce.number().int().nonnegative(),
   propertyType: z.nativeEnum(PropertyTypeEnum),
   address: z.string().min(1, "Address is required"),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   country: z.string().min(1, "Country is required"),
   postalCode: z.string().min(1, "Postal code is required"),
+  coordinates: z.array(z.number()).default([0, 0]),
+   
 });
 
 export type PropertyFormData = z.infer<typeof propertySchema>;
