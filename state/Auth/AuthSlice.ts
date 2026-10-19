@@ -43,7 +43,7 @@ export interface AuthResponse {
 export const adminsApi = createApi({
   reducerPath: "adminsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3002",
+    baseUrl: "https://rentiful-server-1.onrender.com",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
@@ -59,6 +59,7 @@ export const adminsApi = createApi({
     "PropertyDtails",
     "Leases",
     "Payments",
+    "Applications"
   ],
   endpoints: (builder) => ({
     /*fetchUsers: builder.query<any, void>({
@@ -223,7 +224,7 @@ export const adminsApi = createApi({
           : [{ type: "Properties", id: "LIST" }],
     }),
 
-    
+     //lease related endpoints 
     getLeasesProperty: builder.query<any, { propertyId: string }>({
       query: ({ propertyId }) => ({
         url: `/properties/${propertyId}/leases`,
@@ -231,7 +232,7 @@ export const adminsApi = createApi({
         providesTags: ["Leases"],
       }),
     }),
-    //lease related endpoints
+  
     getTenantLeases: builder.query<any, void>({
       query: () => ({
         url: `/leases/tenantLeases`,
@@ -273,9 +274,41 @@ export const adminsApi = createApi({
         providesTags: ["Payments"],
       }),
     }),
-  }),
-});
 
+    // applications related endpoints
+
+    createApplication: builder.mutation<any , {status:string,propertyId:string}>({
+      
+      query: (body) => ({
+        url: "/applications/create",
+        method: "POST",
+        body: body,
+      }),
+
+      invalidatesTags: ["Applications"]
+    }),
+
+    getApplications: builder.query<any , void >({
+      query: () => ({
+        url: `/applications/all-Applications`,
+        providesTags: ["Applications"],
+        
+      }),
+      
+    }),
+    
+    updateApplicationStatus: builder.mutation<any ,{applicationId:string , status:string} >({
+      query: ({applicationId , status}) => ({
+        url: `/applications/:${applicationId}/status`,
+        method: "PATCH",
+        body: {status},
+      }),
+
+      invalidatesTags: (result) => ["Applications" , "Leases"]
+    }),
+
+}),
+});
 export const {
   useSignUpUserMutation,
   useLoginUserMutation,
@@ -292,4 +325,8 @@ export const {
   useGetLeasesPropertyByUserQuery,
   useGetPaymentsQuery,
   useGetPaymentsPropertyQuery,
+  useCreateApplicationMutation ,
+  useGetApplicationsQuery,
+  useUpdateApplicationStatusMutation
+  
 } = adminsApi;

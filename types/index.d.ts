@@ -66,7 +66,7 @@ declare global {
   interface ApplicationModalProps {
     isOpen: boolean;
     onClose: () => void;
-    propertyId: number;
+    propertyId: string;
   }
 
   interface ContactWidgetProps {
@@ -91,7 +91,7 @@ declare global {
 
   interface ApplicationCardProps {
     application: Application;
-    userType: "manager" | "renter";
+    userType: "Manager" | "Tenant";
     children: React.ReactNode;
   }
 

@@ -18,7 +18,7 @@ const NewProperty = () => {
         isLoading,
         isError
     } = useGetUserQuery()
-
+console.log(AuthUser)
     const [createProperty] = useCreatePropertyMutation();
     type FormData = z.input<typeof propertySchema>;
 
@@ -66,7 +66,7 @@ const NewProperty = () => {
     };
     const onSubmit = async (data: FormData) => {
         console.log(data)
-        if (!AuthUser || AuthUser?.data.role !== "manager") {
+        if (!AuthUser || AuthUser?.user?.data.role !== "manager") {
              <Not_Found />
         }
         console.log("start")
