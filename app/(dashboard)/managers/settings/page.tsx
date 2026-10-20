@@ -70,7 +70,7 @@ const ManagerSettings = () => {
   }
   return (
     <div>
-      {authUser && <SettingsForm initialData={initialData} onSubmit={handleSubmit} userType={authUser?.user.role} />}
+      {authUser && <SettingsForm initialData={initialData} onSubmit={handleSubmit} userType={authUser?.data?.user.role} />}
       <ToastContainer/>
     </div>
   )
