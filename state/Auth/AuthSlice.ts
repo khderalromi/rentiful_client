@@ -43,7 +43,7 @@ export interface AuthResponse {
 export const adminsApi = createApi({
   reducerPath: "adminsApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://rentiful-server-1.onrender.com",
+    baseUrl: "https://rentiful-server-6.onrender.com",
     prepareHeaders: (headers) => {
       const token = localStorage.getItem("token");
       if (token) {
