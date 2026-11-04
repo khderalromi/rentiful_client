@@ -9,6 +9,9 @@ import { Property } from '@/state';
 import { BounceLoader, ClipLoader, DotLoader, GridLoader, MoonLoader, PuffLoader } from "react-spinners";
 import { motion } from "framer-motion";
 import MapFallback from './MapFallback';
+import Not_Found from '@/components/Not_Found';
+import LoadingComponent from '@/components/Loading';
+import ErrorState from '@/components/ErrorState';
 
 mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 console.log(mapboxgl.accessToken)
@@ -23,7 +26,8 @@ const Map = () => {
     data: properties,
     isLoading,
     isError,
-    error: error
+    error,
+    refetch
   } = useGetPropertiesQuery(filters);
   isError && console.log(error)
   properties && console.log(properties)
@@ -57,12 +61,16 @@ const Map = () => {
   },[properties, filters])
 
 //[isloading, isError,properties, filter.coordinates]
-  if (isLoading) return <PuffLoader color="#010302" />
+  /*if (isLoading) return <PuffLoader color="#010302" />
   if (isError || !properties || properties.data.length == 0) return (
     <div className='basis-5/12 h-1/2 grow relative'>
       <MapFallback onRetry={() => window.location.reload()} />
     </div>
-  );
+  );*/
+  
+  if (isLoading) return <LoadingComponent />
+  if (!properties) return <Not_Found />
+  if (isError) return <ErrorState error={error} onRetry={refetch} />
   return (
     <div className='basis-5/12 h-screen grow relative rounded-xl'>
       <div

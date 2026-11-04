@@ -1,4 +1,7 @@
 
+import ErrorState from '@/components/ErrorState';
+import LoadingComponent from '@/components/Loading';
+import Not_Found from '@/components/Not_Found';
 import { useGetPropertyQuery } from '@/state/Auth/AuthSlice';
 import { Compass, MapPin } from 'lucide-react';
 import mapboxgl from 'mapbox-gl';
@@ -10,7 +13,9 @@ const PropertyLocation = ({ propertyId }: PropertyDetailsProps) => {
     const {
         data: property,
         isLoading,
-        isError
+        isError,
+        error,
+        refetch
     } = useGetPropertyQuery({ propertyId });
     console.log(property)
 
@@ -18,8 +23,10 @@ const PropertyLocation = ({ propertyId }: PropertyDetailsProps) => {
     const mapRef = useRef<mapboxgl.Map | null>(null);
 
     useEffect(() => {
-        if (isLoading || isError || !property || !mapContainerRef.current) return;
-
+        if (!mapContainerRef.current) return;
+        if (isLoading)  <LoadingComponent/>
+          if ( !property)  <Not_Found/>
+          if (isError)  <ErrorState error={error} onRetry={refetch}/>
         const map = new mapboxgl.Map({
             container: mapContainerRef?.current,
             style: "mapbox://styles/khder99/cmubekbqi006c01sje3o828gm",

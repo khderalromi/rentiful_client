@@ -1,3 +1,6 @@
+import ErrorState from '@/components/ErrorState';
+import LoadingComponent from '@/components/Loading';
+import Not_Found from '@/components/Not_Found';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AmenityIcons, HighlightIcons } from '@/lib/constants';
 import { formatEnumString } from '@/lib/utils';
@@ -9,11 +12,14 @@ const PropertyDetails = ({ propertyId }: PropertyDetailsProps) => {
   const {
     data: property,
     isLoading,
-    isError
+    isError,  
+    error,
+    refetch
   } = useGetPropertyQuery({ propertyId });
   console.log(property)
-  if (isLoading) return <div>Loading...</div>
-  if (isError || !property) return <div>Error fetching property details</div>
+  if (isLoading) return <LoadingComponent/>
+  if ( !property) return <Not_Found/>
+  if (isError) return <ErrorState error={error} onRetry={refetch}/>
   return (
     <div className='mb-6'>
         {/*Amenities*/}

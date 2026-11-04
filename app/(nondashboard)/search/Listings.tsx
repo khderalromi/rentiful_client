@@ -1,6 +1,8 @@
 import Card from '@/components/Card';
 import CardCompact from '@/components/CardCompact';
+import ErrorState from '@/components/ErrorState';
 import LoadingComponent from '@/components/Loading';
+import Not_Found from '@/components/Not_Found';
 import { Property } from '@/state';
 import { useAddFavouritePropertyMutation, useGetPropertiesQuery, useGetUserQuery, useRemoveFavouritePropertyMutation } from '@/state/Auth/AuthSlice';
 import { useAppSelector } from '@/state/redux';
@@ -19,7 +21,9 @@ const Listings = () => {
      const {
         data: properties,
         isError,
-        isLoading
+        isLoading,
+        error,
+        refetch
     } = useGetPropertiesQuery(filters);
     console.log(authData?.data)
     //console.log(properties)
@@ -40,7 +44,8 @@ const Listings = () => {
   }
 
   if (isLoading) return <LoadingComponent/>;
-  if (isError || !properties) return <div>failed to fetch data</div>
+  if ( !properties) return <Not_Found/>
+  if (isError) return <ErrorState error={error} onRetry={refetch}/>
   return (
     <div className='w-full'>
       <h3 className='text-sm px-4 font-bold'>

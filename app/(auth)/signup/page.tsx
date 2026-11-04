@@ -22,7 +22,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { LoaderIcon } from "lucide-react";
-  import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import { getErrorMessage } from "@/lib/error/errorHandler";
 
 // ✅ الخطوة 1: تعريف Validation Schema باستخدام Zod
 const formSchema = z.object({
@@ -31,11 +32,11 @@ const formSchema = z.object({
   password: z.string().min(8, "يجب أن تكون كلمة المرور من 8 أحرف على الأقل"),
   phoneNumber: z.string().regex(/^\+963[0-9]{9}$/, "رقم الهاتف غير صحيح يجب ان يبدأ ب +963"),
   passwordConfirm: z.string().min(8, "يجب أن تكون كلمة المرور من 8 أحرف على الأقل"),
-  role: z.enum(["Tenant", "Manager"], { message: "يرجى اختيار الدور" }),  
+  role: z.enum(["Tenant", "Manager"], { message: "يرجى اختيار الدور" }),
 
 }).refine((data) => data.password === data.passwordConfirm, {
   message: "كلمات المرور غير متطابقة",
-  path: ["passwordConfirm"], 
+  path: ["passwordConfirm"],
 });
 
 // ✅ تحديد نوع البيانات من Zod          /^\+963[0-9]{9}$/
@@ -57,7 +58,7 @@ export default function LoginCard() {
       email: "",
       password: "",
       passwordConfirm: "",
-      phoneNumber:"",
+      phoneNumber: "",
       role: "Tenant",
     },
   });
@@ -80,25 +81,22 @@ export default function LoginCard() {
 
       console.log("استجابة الباك إند:", response);
 
-      // تخزين التوكن
       if (response?.token) {
         localStorage.setItem("token", response.token);
       }
       toast.success("Log In Seuccessfully", { autoClose: 2000 });
       router.push("/");
     } catch (error: any) {
-      console.log(error);
-      const errorMessage = 
-        error?.data?.message || 
-        error?.message 
-      
-      toast.error(errorMessage, { autoClose: 2000 });}
+      toast.error(getErrorMessage(error), {
+        autoClose: 3000
+      });
+    }
   };
 
   return (
-    <div className="w-1/3 self-center">
+    <div className="w-full max-w-md mx-auto px-4 sm:px-6 self-center">
       <Card className="w-full max-w-sm">
-        <CardHeader>
+        <CardHeader  className="space-y-2">
           <CardTitle>
             <p>RENT<span className="text-red-500">IFul</span></p>
           </CardTitle>
@@ -120,7 +118,7 @@ export default function LoginCard() {
                   id="name"
                   type="text"
                   placeholder="Enter your full name"
-                  {...register("name")} 
+                  {...register("name")}
                 />
                 {/* عرض رسالة الخطأ إن وجدت */}
                 {errors.name && (
@@ -135,7 +133,7 @@ export default function LoginCard() {
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  {...register("email")} 
+                  {...register("email")}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email.message}</p>
@@ -150,7 +148,7 @@ export default function LoginCard() {
                   id="phoneNumber"
                   type="text"
                   placeholder="Enter your phone number"
-                  {...register("phoneNumber")} 
+                  {...register("phoneNumber")}
                 />
                 {errors.phoneNumber && (
                   <p className="text-red-500 text-sm">{errors.phoneNumber.message}</p>
@@ -172,14 +170,14 @@ export default function LoginCard() {
                   id="password"
                   type="password"
                   placeholder="Enter your password"
-                  {...register("password")} 
+                  {...register("password")}
                 />
                 {errors.password && (
                   <p className="text-red-500 text-sm">{errors.password.message}</p>
                 )}
               </div>
 
-              
+
               {/* ✅ حقل تأكيد كلمة المرور */}
               <div className="grid gap-2">
                 <Label htmlFor="passwordConfirm">Confirm Password</Label>
@@ -187,7 +185,7 @@ export default function LoginCard() {
                   id="passwordConfirm"
                   type="password"
                   placeholder="Enter your password again"
-                  {...register("passwordConfirm")} 
+                  {...register("passwordConfirm")}
                 />
                 {errors.passwordConfirm && (
                   <p className="text-red-500 text-sm">{errors.passwordConfirm.message}</p>
@@ -198,37 +196,37 @@ export default function LoginCard() {
               {/* ✅ حقل تأكيد كلمة المرور */}
               <div className="grid gap-2">
                 <Label htmlFor="role">Role</Label>
-                
-              <RadioGroup defaultValue="Tenant" className="w-fit">
-                    <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Tenant" id="r1" />
-                        <Label htmlFor="r1">Tenant</Label>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        <RadioGroupItem value="Manager" id="r2" />
-                        <Label htmlFor="r2">Manager</Label>
-                    </div>
-                    
+
+                <RadioGroup defaultValue="Tenant" className="w-fit">
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="Tenant" id="r1" />
+                    <Label htmlFor="r1">Tenant</Label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <RadioGroupItem value="Manager" id="r2" />
+                    <Label htmlFor="r2">Manager</Label>
+                  </div>
+
                 </RadioGroup>
                 {errors.role && (
                   <p className="text-red-500 text-sm">{errors.role.message}</p>
                 )}
               </div>
-              
+
             </div>
 
 
             {/* ✅ زر الإرسال */}
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full"
               disabled={isLoading} // تعطيل الزر أثناء الإرسال
             >
-              {isLoading ?  <LoaderIcon
-                  role="status"
-                  aria-label="Loading"
-                  className={cn("size-4 animate-spin")}
-                /> : " Sign Up"}
+              {isLoading ? <LoaderIcon
+                role="status"
+                aria-label="Loading"
+                className={cn("size-4 animate-spin")}
+              /> : " Sign Up"}
             </Button>
           </form>
         </CardContent>

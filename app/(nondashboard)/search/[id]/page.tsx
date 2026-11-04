@@ -11,7 +11,6 @@ import ApplicationModal from './ApplicationModal';
 
 const SingleListing = () => {
   const { id: propertyId } = useParams<{ id: string }>();
-  //const propertyId = (id);
   const {data: authUser} = useGetUserQuery();
   const [isModalOpen , setIsModalOpen] = useState(false);
   return (

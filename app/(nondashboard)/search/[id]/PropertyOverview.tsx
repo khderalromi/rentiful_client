@@ -1,3 +1,6 @@
+import ErrorState from '@/components/ErrorState';
+import LoadingComponent from '@/components/Loading';
+import Not_Found from '@/components/Not_Found';
 import { useGetPropertyQuery } from '@/state/Auth/AuthSlice';
 import { MapPin, Star } from 'lucide-react';
 import React from 'react'
@@ -6,11 +9,14 @@ const PropertyOverview = ({ propertyId }: PropertyOverviewProps) => {
   const {
     data: property,
     isLoading,
-    isError
+    isError,
+    error,
+    refetch
   } = useGetPropertyQuery({ propertyId });
-  console.log(property)
-  if (isLoading) return <div>Loading...</div>
-  if (isError || !property) return <div>Error fetching property details</div>
+
+  if (isLoading) return <LoadingComponent />
+  if (!property) return <Not_Found />
+  if (isError) return <ErrorState error={error} onRetry={refetch} />
   return (
     /*Headers*/
     <div className='mb-4'>
