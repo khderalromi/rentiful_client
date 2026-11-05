@@ -299,12 +299,12 @@ export const adminsApi = createApi({
     
     updateApplicationStatus: builder.mutation<any ,{applicationId:string , status:string} >({
       query: ({applicationId , status}) => ({
-        url: `/applications/:${applicationId}/status`,
+        url: `/applications/${applicationId}/status`,
         method: "PATCH",
         body: {status},
       }),
 
-      invalidatesTags: (result) => ["Applications" , "Leases"]
+      invalidatesTags: ["Applications" , "Leases"]
     }),
 
 }),

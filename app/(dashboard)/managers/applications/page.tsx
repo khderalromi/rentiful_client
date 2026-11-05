@@ -17,6 +17,7 @@ const Applications = () => {
     isError,
   } = useGetApplicationsQuery();
   const [updateApplicationState] = useUpdateApplicationStatusMutation();
+  console.log(applications)
   const handleStatusChange = async (applicationId: string, status: string) => {
     await updateApplicationState({ applicationId, status })
   }
@@ -61,9 +62,9 @@ console.log(applications)
                   <div className='flex justify-between gap-5 w-full pb-4 px-4'>
                     {/* Colored Section Status */}
                     <div
-                      className={`p-4 text-green-700 grow ${application.status === "Approved"
+                      className={`p-4 text-green-700 grow ${application.status === "approved"
                         ? "bg-green-100"
-                        : application.status === "Denied"
+                        : application.status === "denied"
                           ? "bg-red-100"
                           : "bg-yellow-100"
                         }`}
@@ -79,18 +80,18 @@ console.log(applications)
                         </span>
                         <CircleCheckBigIcon className="w-5 h-5 mr-2 flex-shrink-0" />
                         <span
-                          className={`font-semibold ${application.status === "Approved"
+                          className={`font-semibold ${application.status === "approved"
                             ? "text-green-800"
-                            : application.status === "Denied"
+                            : application.status === "denied"
                               ? "text-red-800"
                               : "text-yellow-800"
                             }`}
                         >
-                          {application.status === "Approved" &&
+                          {application.status === "approved" &&
                             "This application has been approved."}
-                          {application.status === "Denied" &&
+                          {application.status === "denied" &&
                             "This application has been denied."}
-                          {application.status === "Pending" &&
+                          {application.status === "pending" &&
                             "This application is pending review."}
                         </span>
                       </div>
@@ -137,7 +138,7 @@ console.log(applications)
                           </button>
                         </>
                       )}
-                      {application.status === "Denied" && (
+                      {application.status === "denied" && (
                         <button
                           className={`bg-gray-800 text-white py-2 px-4 rounded-md flex items-center
                                               justify-center hover:bg-secondary-500 hover:text-primary-50`}
