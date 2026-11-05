@@ -5,8 +5,10 @@ import LoadingComponent from '@/components/Loading';
 import Not_Found from '@/components/Not_Found';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useGetApplicationsQuery, useGetUserQuery, useUpdateApplicationStatusMutation } from '@/state/Auth/AuthSlice';
-import { CircleCheckBig, CircleCheckBigIcon, Download, File, Hospital, Link } from 'lucide-react';
+import { CircleCheckBig, CircleCheckBigIcon, Download, File, Hospital } from 'lucide-react';
+import Link from 'next/link';
 import React, { useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
 
 const Applications = () => {
   const { data: authUser } = useGetUserQuery();
@@ -19,7 +21,13 @@ const Applications = () => {
   const [updateApplicationState] = useUpdateApplicationStatusMutation();
   console.log(applications)
   const handleStatusChange = async (applicationId: string, status: string) => {
-    await updateApplicationState({ applicationId, status })
+    try {
+      await updateApplicationState({ applicationId, status }).unwrap();
+      toast.success(`Application status updated to ${status}`, { autoClose: 2000 });
+    } catch(error:any) {
+       toast.error(
+      error?.data?.message || "Something went wrong. Please try again.", { autoClose: 2000 });
+    }
   }
 console.log(applications)
   if (isLoading) return <LoadingComponent />
@@ -36,6 +44,7 @@ console.log(applications)
         title="Applications"
         subtitle="Create a new property listing with detailed information"
       />
+      <ToastContainer />
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -101,7 +110,7 @@ console.log(applications)
                     {/* Right Buttons */}
                     <div className="flex gap-2">
                       <Link
-                        href={`/managers/properties/${application.property?._id}`}
+                        href={`/managers/properties/${application?.property?._id}`}
                         className={`bg-white border border-gray-300 text-gray-700 py-2 px-4 
                                               rounded-md flex items-center justify-center hover:bg-primary-700 hover:text-primary-50`}
                         
