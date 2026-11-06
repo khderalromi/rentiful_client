@@ -44,7 +44,6 @@ console.log(applications)
         title="Applications"
         subtitle="Create a new property listing with detailed information"
       />
-      <ToastContainer />
       <Tabs
         value={activeTab}
         onValueChange={setActiveTab}
@@ -56,6 +55,7 @@ console.log(applications)
           <TabsTrigger value="approved">Approved</TabsTrigger>
           <TabsTrigger value="denied">Denied</TabsTrigger>
         </TabsList>
+        <ToastContainer/>
         {["all", "pending", "approved", "denied"].map((tab) => (
           <TabsContent key={tab} value={tab} className="mt-5 w-full">
             {filterApplications.filter(

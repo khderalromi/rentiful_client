@@ -39,7 +39,7 @@ const ApplicationModal = ({
         await createApplication({
           ...data,
           //applicationDate: new Date().toISOString(),
-          status: "Pending",
+          //status: "Pending",
           propertyId: propertyId,
           
         });

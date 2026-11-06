@@ -277,7 +277,7 @@ export const adminsApi = createApi({
 
     // applications related endpoints
 
-    createApplication: builder.mutation<any , {status:string,propertyId:string}>({
+    createApplication: builder.mutation<any , {propertyId:string, message?:string}>({
       
       query: (body) => ({
         url: "/applications/create",
