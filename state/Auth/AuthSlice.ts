@@ -291,9 +291,8 @@ export const adminsApi = createApi({
     getApplications: builder.query<any , void >({
       query: () => ({
         url: `/applications/all-Applications`,
-        providesTags: ["Applications"],
-        
       }),
+      providesTags: ["Applications"],
       
     }),
     
