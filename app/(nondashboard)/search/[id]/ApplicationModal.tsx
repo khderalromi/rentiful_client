@@ -43,6 +43,7 @@ const ApplicationModal = ({
           propertyId: propertyId,
           
         });
+        console.log(data);
         onClose();
         toast.success('submitted application successful')
       };
