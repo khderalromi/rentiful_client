@@ -25,8 +25,8 @@ const PropertyLocation = ({ propertyId }: PropertyDetailsProps) => {
     useEffect(() => {
         if (!mapContainerRef.current) return;
         if (isLoading)  <LoadingComponent/>
-          if ( !property)  <Not_Found/>
-          if (isError)  <ErrorState error={error} onRetry={refetch}/>
+        if ( !property)  <Not_Found/>
+        if (isError)  <ErrorState error={error} onRetry={refetch}/>
         const map = new mapboxgl.Map({
             container: mapContainerRef?.current,
             style: "mapbox://styles/khder99/cmubekbqi006c01sje3o828gm",
