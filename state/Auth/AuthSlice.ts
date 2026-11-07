@@ -75,7 +75,7 @@ export const adminsApi = createApi({
         body: newAdmin,
       }),
 
-      invalidatesTags: ["Users"], //التاغ التي ستتغير
+      invalidatesTags: ["Users"], 
     }),
 
     loginUser: builder.mutation<AuthResponse, LoginCredentials>({
@@ -85,7 +85,7 @@ export const adminsApi = createApi({
         body: newAdmin,
       }),
 
-      invalidatesTags: ["Users"], //التاغ التي ستتغير
+      invalidatesTags: ["Users"], 
     }),
 
     getUser: builder.query<any, void>({
