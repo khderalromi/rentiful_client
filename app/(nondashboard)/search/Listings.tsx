@@ -43,8 +43,8 @@ const Listings = () => {
     }
   }
 
-  if (isLoading) return <LoadingComponent/>;
-  if ( !properties) return <Not_Found/>
+  //if (isLoading) return <LoadingComponent/>;
+  //if ( !properties) return <Not_Found/>
   if (isError) return <ErrorState error={error} onRetry={refetch}/>
   return (
     <div className='w-full'>
