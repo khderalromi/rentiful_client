@@ -42,7 +42,7 @@ interface initialStateTypes{
 }
 export const initialState: initialStateTypes= {
   filters: {
-  city: "lebanon",
+  city: "syria",
   beds: "any",
   baths: "any",
   propertyType: "any",
