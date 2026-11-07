@@ -62,7 +62,7 @@ const Listings = () => {
               key={property._id}
               property={property}
               isFavorite = {
-                authData.data?.userInfo?.favourites.some(
+                authData?.data?.userInfo?.favourites.some(
                   (fav:Property) => fav._id === property._id
                 ) || false
               }
