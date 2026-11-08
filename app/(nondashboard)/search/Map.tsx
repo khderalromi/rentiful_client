@@ -33,7 +33,7 @@ const Map = () => {
   properties && console.log(properties)
 
   useEffect(() => {
-    if (isLoading || isError || !properties || !mapContainerRef.current) return ;
+    if ( !mapContainerRef.current) return ;
   
     if (mapRef.current) {
       mapRef.current.remove();
@@ -69,8 +69,8 @@ const Map = () => {
   );*/
   
   if (isLoading) return<LoadingComponent />
-  if (!properties) return <Not_Found />
   if (isError) return <ErrorState error={error} onRetry={refetch} />
+  if (!properties) return <Not_Found />
   return (
     <div className='basis-5/12 h-screen grow relative rounded-xl'>
       <div

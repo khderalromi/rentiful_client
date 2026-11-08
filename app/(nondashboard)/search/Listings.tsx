@@ -42,14 +42,14 @@ const Listings = () => {
       await addFavourite({propertyId})
     }
   }
-
-  if (isLoading) return <LoadingComponent/>;
-  if ( !properties) return <Not_Found/>
-  if (isError) return <ErrorState error={error} onRetry={refetch}/>
+if (isLoading || isError || !properties) return null;
+  //if (isLoading) return <LoadingComponent/>;
+  //if ( !properties) return <Not_Found/>
+  //if (isError) return <ErrorState error={error} onRetry={refetch}/>
   return (
     <div className='w-full'>
       <h3 className='text-sm px-4 font-bold'>
-        {properties.data.length}
+        {properties?.data?.length}
         <span className='text-gray-700 font-normal'>
           Places in {filters?.city}
         </span>
