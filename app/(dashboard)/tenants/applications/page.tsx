@@ -3,9 +3,14 @@ import ApplicationCard from '@/components/ApplicationCard';
 import Header from '@/components/Header';
 import LoadingComponent from '@/components/Loading';
 import Not_Found from '@/components/Not_Found';
-import { useGetApplicationsQuery, useGetUserQuery } from '@/state/Auth/AuthSlice';
-import { CircleCheckBig, Clock, Download, XCircle } from 'lucide-react';
+import { AlertDialogTrigger } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { useCancelApplicationMutation, useGetApplicationsQuery, useGetUserQuery } from '@/state/Auth/AuthSlice';
+import { cn } from 'cn';
+import { CircleCheckBig, Clock, Delete, Download, XCircle } from 'lucide-react';
 import React, { useState } from 'react'
+import { toast } from 'react-toastify';
 
 const Applications = () => {
   const { data: authUser } = useGetUserQuery();
@@ -16,6 +21,17 @@ const Applications = () => {
     isError,
   } = useGetApplicationsQuery();
   
+    const [deleteApplication] = useCancelApplicationMutation();
+    console.log(applications)
+    const handleCancelApplication = async (applicationId: string) => {
+      try {
+        await deleteApplication({ applicationId }).unwrap();
+        toast.success(`Application deleted successfully`, { autoClose: 2000 });
+      } catch(error:any) {
+         toast.error(
+        error?.data?.message || "Something went wrong. Please try again.", { autoClose: 2000 });
+      }
+    }
 console.log(applications)
   if (isLoading) return <LoadingComponent />
   if (isError || !applications) return <Not_Found />
@@ -61,6 +77,35 @@ console.log(applications)
                 <Download className="w-5 h-5 mr-2" />
                 Download Agreement
               </button>
+              
+    <Dialog>
+  <DialogTrigger 
+    disabled= {application?.status == "pending" ? false :true}
+    className="disabled:cursor-not-allowed cursor-pointer `bg-white border border-gray-300 text-gray-700 py-2 px-4
+                          rounded-md flex items-center justify-center hover:bg-red-700 hover:text-primary-50"
+  >
+    Delete
+  </DialogTrigger>
+
+  <DialogContent className="sm:max-w-sm">
+    <DialogHeader>
+      <DialogTitle>Delete Application </DialogTitle>
+      <DialogDescription>
+        Are you want to delete your application for this property? This action cannot be undone.
+      </DialogDescription>
+    </DialogHeader>
+    <DialogFooter>
+      <DialogClose>Cancel </DialogClose>
+      <Button onClick={() =>
+                              handleCancelApplication(application._id)
+      }
+            className="bg-red-500"
+      >
+        Delete
+      </Button>
+    </DialogFooter>
+  </DialogContent>
+</Dialog>
             </div>
           </ApplicationCard>
         ))}

@@ -2,6 +2,10 @@ import { Bath, Bed, Heart, House, Star } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Button } from './ui/button'
+import { toast } from 'react-toastify'
+import { useDeletePropertyMutation } from '@/state/Auth/AuthSlice'
 
 const Card = ({
     property,
@@ -13,7 +17,17 @@ const Card = ({
     const [imgsrc, setImgSerc] = useState(
         property.photoUrls?.[0] || "/placeholder.jpg"
     )
-
+    const [deleteProperty] = useDeletePropertyMutation();
+    
+      const handleDeleteProperty = async (propertyId: string) => {
+        try {
+          await deleteProperty({ propertyId }).unwrap();
+          toast.success(`Property deleted successfully`, { autoClose: 2000 });
+        } catch (error: any) {
+          toast.error(
+            error?.data?.message || "Something went wrong. Please try again.", { autoClose: 2000 });
+        }
+      }
     return (
         <div className='bg-white rounded-xl overflow-hidden shadow-lg w-full mb-5'>
             <div className='relative'>
@@ -108,7 +122,34 @@ const Card = ({
                 </span>
 
             </div>
+        
+              <Dialog>
+                <DialogTrigger
+                  className=" cursor-pointer bg-red-500 w-full  text-white py-2 px-4
+                          rounded-md flex items-center justify-center hover:bg-red-300 hover:text-gray-200 "
+                >
+                  Delete
+                </DialogTrigger>
 
+                <DialogContent className="sm:max-w-sm">
+                  <DialogHeader>
+                    <DialogTitle>Delete Property </DialogTitle>
+                    <DialogDescription>
+                      Are you want to delete this property? This action cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose>Cancel </DialogClose>
+                    <Button onClick={() =>
+                      handleDeleteProperty(property._id)
+                    }
+                      className="bg-red-500"
+                    >
+                      Delete
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
         </div>
     )
 }

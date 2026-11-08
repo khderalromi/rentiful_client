@@ -191,6 +191,7 @@ export const adminsApi = createApi({
       },
     }),
 
+
     //Manager related Endpoints
     
     createProperty: builder.mutation<Partial<Property> ,FormData >({
@@ -224,6 +225,16 @@ export const adminsApi = createApi({
           : [{ type: "Properties", id: "LIST" }],
     }),
 
+    deleteProperty: builder.mutation<any ,{propertyId:string} >({
+      query: ({propertyId}) => ({
+        url: `/properties/delete/${propertyId}`,
+        method: "DELETE",
+        
+      }),
+
+      invalidatesTags: ["Properties" ,"Applications" , "Leases"]
+    }),
+    
      //lease related endpoints 
     getLeasesProperty: builder.query<any, { propertyId: string }>({
       query: ({ propertyId }) => ({
@@ -305,6 +316,17 @@ export const adminsApi = createApi({
 
       invalidatesTags: ["Applications" , "Leases"]
     }),
+    
+    cancelApplication: builder.mutation<any ,{applicationId:string} >({
+      query: ({applicationId}) => ({
+        url: `/applications/${applicationId}/cancel`,
+        method: "PATCH",
+        body: {status},
+      }),
+
+      invalidatesTags: ["Applications" , "Leases"]
+    }),
+    
 
 }),
 });
@@ -318,6 +340,7 @@ export const {
   useAddFavouritePropertyMutation,
   useRemoveFavouritePropertyMutation,
   useGetManagerPropertiesQuery,
+  useDeletePropertyMutation,
   useCreatePropertyMutation,
   useGetLeasesPropertyQuery,
   useGetTenantLeasesQuery,
@@ -326,6 +349,7 @@ export const {
   useGetPaymentsPropertyQuery,
   useCreateApplicationMutation ,
   useGetApplicationsQuery,
-  useUpdateApplicationStatusMutation
+  useUpdateApplicationStatusMutation,
+  useCancelApplicationMutation,
   
 } = adminsApi;
