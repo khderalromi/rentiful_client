@@ -20,19 +20,19 @@ const Applications = () => {
     isLoading,
     isError,
   } = useGetApplicationsQuery();
-  
-    const [deleteApplication] = useCancelApplicationMutation();
-    console.log(applications)
-    const handleCancelApplication = async (applicationId: string) => {
-      try {
-        await deleteApplication({ applicationId }).unwrap();
-        toast.success(`Application deleted successfully`, { autoClose: 2000 });
-      } catch(error:any) {
-         toast.error(
+
+  const [deleteApplication] = useCancelApplicationMutation();
+  console.log(applications)
+  const handleCancelApplication = async (applicationId: string) => {
+    try {
+      await deleteApplication({ applicationId }).unwrap();
+      toast.success(`Application deleted successfully`, { autoClose: 2000 });
+    } catch (error: any) {
+      toast.error(
         error?.data?.message || "Something went wrong. Please try again.", { autoClose: 2000 });
-      }
     }
-console.log(applications)
+  }
+  console.log(applications)
   if (isLoading) return <LoadingComponent />
   if (isError || !applications) return <Not_Found />
 
@@ -45,7 +45,7 @@ console.log(applications)
       />
       <div className='w-full'>
 
-        {applications?.data?.applications.map((application:any) => (
+        {applications?.data?.applications.map((application: any) => (
           <ApplicationCard
             key={application._id}
             application={application}
@@ -77,35 +77,35 @@ console.log(applications)
                 <Download className="w-5 h-5 mr-2" />
                 Download Agreement
               </button>
-              
-    <Dialog>
-  <DialogTrigger 
-    disabled= {application?.status == "pending" ? false :true}
-    className="disabled:cursor-not-allowed cursor-pointer `bg-white border border-gray-300 text-gray-700 py-2 px-4
-                          rounded-md flex items-center justify-center hover:bg-red-700 hover:text-primary-50"
-  >
-    Delete
-  </DialogTrigger>
 
-  <DialogContent className="sm:max-w-sm">
-    <DialogHeader>
-      <DialogTitle>Delete Application </DialogTitle>
-      <DialogDescription>
-        Are you want to delete your application for this property? This action cannot be undone.
-      </DialogDescription>
-    </DialogHeader>
-    <DialogFooter>
-      <DialogClose>Cancel </DialogClose>
-      <Button onClick={() =>
-                              handleCancelApplication(application._id)
-      }
-            className="bg-red-500"
-      >
-        Delete
-      </Button>
-    </DialogFooter>
-  </DialogContent>
-</Dialog>
+              <Dialog>
+                <DialogTrigger
+                  disabled={application?.status == "pending" ? false : true}
+                  className="disabled:cursor-not-allowed cursor-pointer `bg-white border border-gray-300 text-gray-700 py-2 px-4
+                          rounded-md flex items-center justify-center hover:bg-red-700 hover:text-primary-50"
+                >
+                  Delete
+                </DialogTrigger>
+
+                <DialogContent className="sm:max-w-sm">
+                  <DialogHeader>
+                    <DialogTitle>Delete Application </DialogTitle>
+                    <DialogDescription>
+                      Are you want to delete your application for this property? This action cannot be undone.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose>Cancel </DialogClose>
+                    <Button onClick={() =>
+                      handleCancelApplication(application._id)
+                    }
+                      className="bg-red-500"
+                    >
+                      Delete
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
             </div>
           </ApplicationCard>
         ))}
