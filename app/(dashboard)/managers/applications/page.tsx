@@ -60,7 +60,7 @@ console.log(applications)
           <TabsContent key={tab} value={tab} className="mt-5 w-full">
             {filterApplications.filter(
               (application: any) =>
-                tab === "all" || application.status.toLowerCase() === tab
+                tab === "all" || application.status.toLowerCase() === tab &&  application.status.toLowerCase() !== "cancelled"
             )
               .map((application: any) => (
                 <ApplicationCard
