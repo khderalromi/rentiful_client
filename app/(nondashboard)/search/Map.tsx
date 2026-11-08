@@ -25,6 +25,7 @@ const Map = () => {
   const {
     data: properties,
     isLoading,
+    isFetching,
     isError,
     error,
     refetch
@@ -68,7 +69,7 @@ const Map = () => {
     </div>
   );*/
   
-  if (isLoading) return<LoadingComponent />
+  if (isLoading || isFetching) return<LoadingComponent />
   if (isError) return <ErrorState error={error} onRetry={refetch} />
   if (!properties) return <Not_Found />
   return (
