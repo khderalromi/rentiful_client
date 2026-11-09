@@ -5,7 +5,7 @@ import React, { useState } from 'react'
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 import { Button } from './ui/button'
 import { toast } from 'react-toastify'
-import { useDeletePropertyMutation } from '@/state/Auth/AuthSlice'
+import { useDeletePropertyMutation, useGetUserQuery } from '@/state/Auth/AuthSlice'
 
 const Card = ({
     property,
@@ -19,6 +19,9 @@ const Card = ({
     )
     const [deleteProperty] = useDeletePropertyMutation();
     
+        const { data: authData } = useGetUserQuery() ;
+        const userInfo = authData?.data?.user;
+        console.log(authData)
       const handleDeleteProperty = async (propertyId: string) => {
         try {
           await deleteProperty({ propertyId }).unwrap();
@@ -122,7 +125,8 @@ const Card = ({
                 </span>
 
             </div>
-        
+            
+            {userInfo.role === "Manager" &&
               <Dialog>
                 <DialogTrigger
                   className=" cursor-pointer bg-red-500 w-full  text-white py-2 px-4
@@ -150,6 +154,7 @@ const Card = ({
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
+              }
         </div>
     )
 }
