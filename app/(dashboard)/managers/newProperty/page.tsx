@@ -9,7 +9,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { PropertyTypeEnum, AmenityEnum, HighlightEnum, LOCATION_MAPPING } from "../../../../lib/constants"
 import { Form, FormProvider, useForm } from 'react-hook-form';
 import z from 'zod';
-import { toast } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
+import { LoaderIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const NewProperty = () => {
 
@@ -18,8 +20,8 @@ const NewProperty = () => {
         isLoading,
         isError
     } = useGetUserQuery()
-console.log(AuthUser)
-    const [createProperty] = useCreatePropertyMutation();
+    console.log(AuthUser)
+    const [createProperty, { isLoading: isCreating }] = useCreatePropertyMutation();
     type FormData = z.input<typeof propertySchema>;
 
     const form = useForm<FormData, any, z.output<typeof propertySchema>>({
@@ -67,35 +69,36 @@ console.log(AuthUser)
     const onSubmit = async (data: FormData) => {
         console.log(data)
         if (!AuthUser || AuthUser?.user?.data.role !== "manager") {
-             <Not_Found />
+            <Not_Found />
         }
         console.log("start")
-        try{
-        const formData = new FormData();
-        Object.entries(data).forEach(([key, value]) => {
-            if (key === "photoUrls") {
-                const files = value as File[]
-                files.forEach((file: File) => {
-                    formData.append("photos", file)
-                })
-            } else if (Array.isArray(value)) {
-                formData.append(key, JSON.stringify(value));
-            } else {
-                formData.append(key, String(value));
+        try {
+            const formData = new FormData();
+            Object.entries(data).forEach(([key, value]) => {
+                if (key === "photoUrls") {
+                    const files = value as File[]
+                    files.forEach((file: File) => {
+                        formData.append("photos", file)
+                    })
+                } else if (Array.isArray(value)) {
+                    formData.append(key, JSON.stringify(value));
+                } else {
+                    formData.append(key, String(value));
+                }
+            })
+            if (selectedCountry && selectedCity && LOCATION_MAPPING[selectedCountry]?.[selectedCity]) {
+                const coords = LOCATION_MAPPING[selectedCountry][selectedCity];
+                console.log(coords)
+                formData.set("coordinates", JSON.stringify(coords));
             }
-        })
-        if (selectedCountry && selectedCity && LOCATION_MAPPING[selectedCountry]?.[selectedCity]) {
-            const coords = LOCATION_MAPPING[selectedCountry][selectedCity];
-            console.log(coords)
-            formData.set("coordinates", JSON.stringify(coords));
-        }
-        
-        formData.append("manager", AuthUser.data?.user?._id)
-        
-        const response = await createProperty(formData);
-        response && toast.success("property created successfully", {autoClose:3000})
-         
-    }catch(err){return toast.error("can't create this property", {autoClose:3000})}
+
+            formData.append("manager", AuthUser.data?.user?._id)
+
+            const response = await createProperty(formData);
+            console.log(response)
+            response && toast.success("property created successfully", { autoClose: 3000 })
+
+        } catch (err) { return toast.error("can't create this property", { autoClose: 3000 }) }
     }
 
 
@@ -105,6 +108,7 @@ console.log(AuthUser)
                 title="Add New Property"
                 subtitle="Create a new property listing with detailed information"
             />
+            <ToastContainer />
             <div className="bg-white rounded-xl p-6">
 
                 <FormProvider  {...form}>
@@ -245,7 +249,7 @@ console.log(AuthUser)
                             <h2 className="text-lg font-semibold mb-4">
                                 Additional Information
                             </h2>
-                   
+
                             <CustomFormField
                                 name="country"
                                 label="Country"
@@ -256,15 +260,15 @@ console.log(AuthUser)
                                 }))}
                             />
 
-                           
+
                             <div className="flex justify-between gap-4">
-                                <CustomFormField 
-                                    name="city" 
-                                    label="City" 
-                                    className="w-full" 
+                                <CustomFormField
+                                    name="city"
+                                    label="City"
+                                    className="w-full"
                                     type="select"
-                                    disabled={selectedCountry? false :true}
-                                    options={selectedCountry? Object.keys(LOCATION_MAPPING[selectedCountry]).map((country) => ({
+                                    disabled={selectedCountry ? false : true}
+                                    options={selectedCountry ? Object.keys(LOCATION_MAPPING[selectedCountry]).map((country) => ({
                                         value: country,
                                         label: country,
                                     })) : []}
@@ -288,7 +292,12 @@ console.log(AuthUser)
                             type="submit"
                             className="bg-primary-700 text-white w-full mt-8"
                         >
-                            Create Property
+                            {isCreating ? <LoaderIcon
+                                role="status"
+                                aria-label="Loading"
+                                className={cn("size-4 animate-spin")}
+                            /> : "Create Property"}
+                            
                         </Button>
                     </form>
                 </FormProvider >

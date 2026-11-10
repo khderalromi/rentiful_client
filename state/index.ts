@@ -50,7 +50,7 @@ export const initialState: initialStateTypes= {
   availableFrom: "any",
   priceRange: [null, null],
   squareFeet: [null, null],
-  coordinates: [null, null]
+  coordinates: [35.7906, 35.5317]
   },
   isFiltersFullOpen: false,
   viewMode: "grid"
