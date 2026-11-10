@@ -13,14 +13,14 @@ const ApplicationCard = ({
   )
 
   const statusColor = 
-    application.status === "Approved"
+    application?.status === "Approved"
       ? "bg-green-500"
-      : application.status === "Denied"
+      : application?.status === "Denied"
       ? "bg-red-500"
       :"bg-yellow-500";
 
   const contactPerson = 
-    userType === "Manager" ? application.tenant : application.property.manager;
+    userType === "Manager" ? application?.tenant : application?.property?.manager;
   
   return (
     <div className="border rounded-xl overflow-hidden shadow-sm bg-white mb-4">
@@ -29,7 +29,7 @@ const ApplicationCard = ({
         <div className="flex flex-col lg:flex-row gap-5 w-full lg:w-auto">
           <Image
             src={imgSrc}
-            alt={application.property.name}
+            alt={application?.property?.name}
             width={200}
             height={150}
             className="rounded-xl object-cover w-full lg:w-[200px] h-[150px]"
@@ -39,15 +39,15 @@ const ApplicationCard = ({
           <div className="flex flex-col justify-between">
             <div>
               <h2 className="text-xl font-bold my-2">
-                {application.property.name}
+                {application?.property?.name}
               </h2>
               <div className="flex items-center mb-2">
                 <MapPin className="w-5 h-5 mr-1" />
-                <span>{`${application.property.locationId?.city}, ${application.property.locationId?.country}`}</span>
+                <span>{`${application?.property?.locationId?.city}, ${application?.property?.locationId?.country}`}</span>
               </div>
             </div>
             <div className="text-xl font-semibold">
-              ${application.property.pricePerMonth}{" "}
+              ${application?.property?.pricePerMonth}{" "}
               <span className="text-sm font-normal">/ month</span>
             </div>
           </div>
@@ -64,22 +64,22 @@ const ApplicationCard = ({
               <span
                 className={`px-2 py-1 ${statusColor} text-white rounded-full text-sm`}
               >
-                {application.status}
+                {application?.status}
               </span>
             </div>
             <hr className="mt-3" />
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Start Date:</span>{" "}
-            {new Date(application.lease?.startDate).toLocaleDateString()}
+            {new Date(application?.lease?.startDate).toLocaleDateString()}
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">End Date:</span>{" "}
-            {new Date(application.lease?.endDate).toLocaleDateString()}
+            {new Date(application?.lease?.endDate).toLocaleDateString()}
           </div>
           <div className="flex justify-between">
             <span className="text-gray-500">Next Payment:</span>{" "}
-            {new Date(application.lease?.nextPaymentDate).toLocaleDateString()}
+            {new Date(application?.lease?.nextPaymentDate).toLocaleDateString()}
           </div>
         </div>
 
@@ -98,21 +98,21 @@ const ApplicationCard = ({
             <div>
               <Image
                 src="/landing-i1.png"
-                alt={contactPerson.name}
+                alt={contactPerson?.name}
                 width={40}
                 height={40}
                 className="rounded-full mr-2 min-w-[40px] min-h-[40px]"
               />
             </div>
             <div className="flex flex-col gap-2">
-              <div className="font-semibold">{contactPerson.name}</div>
+              <div className="font-semibold">{contactPerson?.name}</div>
               <div className="text-sm flex items-center text-primary-600">
                 <PhoneCall className="w-5 h-5 mr-2" />
-                {contactPerson.phoneNumber}
+                {contactPerson?.phoneNumber}
               </div>
               <div className="text-sm flex items-center text-primary-600">
                 <Mail className="w-5 h-5 mr-2" />
-                {contactPerson.email}
+                {contactPerson?.email}
               </div>
             </div>
           </div>
