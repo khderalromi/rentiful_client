@@ -15,7 +15,7 @@ const Card = ({
     propertyLink
 }: CardProps) => {
     const [imgsrc, setImgSerc] = useState(
-        property.photoUrls?.[0] || "/placeholder.jpg"
+        property?.photoUrls?.[0] || "/placeholder.jpg"
     )
     const [deleteProperty] = useDeletePropertyMutation();
     
