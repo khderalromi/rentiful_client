@@ -52,13 +52,13 @@ const Applications = () => {
             userType="Tenant"
           >
             <div className="flex justify-between gap-5 w-full pb-4 px-4">
-              {application.status === "Approved" ? (
+              {application.status === "approved" ? (
                 <div className="bg-green-100 p-4 text-green-700 grow flex items-center">
                   <CircleCheckBig className="w-5 h-5 mr-2" />
                   The property is being rented by you until{" "}
                   {new Date(application.lease?.endDate).toLocaleDateString()}
                 </div>
-              ) : application.status === "Pending" ? (
+              ) : application.status === "pending" ? (
                 <div className="bg-yellow-100 p-4 text-yellow-700 grow flex items-center">
                   <Clock className="w-5 h-5 mr-2" />
                   Your application is pending approval
