@@ -21,7 +21,7 @@ const ApplicationCard = ({
 
   const contactPerson = 
     userType === "Manager" ? application?.tenant : application?.property?.manager;
-  
+  console.log(contactPerson)
   return (
     <div className="border rounded-xl overflow-hidden shadow-sm bg-white mb-4">
       <div className="flex flex-col lg:flex-row  items-start lg:items-center justify-between px-6 md:px-4 py-6 gap-6 lg:gap-4">
