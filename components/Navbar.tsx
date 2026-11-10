@@ -39,7 +39,7 @@ const Navbar = () => {
               <SidebarTrigger />
             </div>
           )}
-          <Link href="/" className="cursor-pointer hover:text-primary-300 transition-colors duration-200"
+          <Link href="/landing" className="cursor-pointer hover:text-primary-300 transition-colors duration-200"
             scroll={false}>
             <div className="flex items-center gap-3">
               <img
