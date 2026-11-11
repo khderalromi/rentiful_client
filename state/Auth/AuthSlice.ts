@@ -172,7 +172,7 @@ export const adminsApi = createApi({
         console.log("resuuultttt 11111", result.tenant._id);
         return [
           { type: "Users", _id: result?.tenant._id },
-          { type: "Properties", id: "LIST" },
+         // { type: "Properties", id: "LIST" },
         ];
       },
     }),
