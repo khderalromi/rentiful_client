@@ -69,9 +69,9 @@ const Map = () => {
     </div>
   );*/
   
-  if (isLoading || isFetching) return<LoadingComponent />
-  if (isError) return <ErrorState error={error} onRetry={refetch} />
-  if (!properties) return <Not_Found />
+  if (isLoading || isFetching) { <LoadingComponent />}
+  if (isError)  {<ErrorState error={error} onRetry={refetch} />}
+  if (!properties) { <Not_Found />}
   return (
     <div className='basis-5/12 h-screen grow relative rounded-xl'>
       <div
