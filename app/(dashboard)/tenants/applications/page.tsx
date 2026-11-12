@@ -80,9 +80,8 @@ const Applications = () => {
 
               <Dialog>
                 <DialogTrigger
-                  disabled={application?.status == "pending" ? false : true}
-                  className="disabled:cursor-not-allowed cursor-pointer `bg-white border border-gray-300 text-gray-700 py-2 px-4
-                          rounded-md flex items-center justify-center hover:bg-red-700 hover:text-primary-50"
+                  className={`${application?.status == "pending"? `cursor-pointer bg-white border border-gray-300 text-gray-700 py-2 px-4
+                          rounded-md flex items-center justify-center hover:bg-red-700 hover:text-primary-50` : "hidden" }`} 
                 >
                   Delete
                 </DialogTrigger>

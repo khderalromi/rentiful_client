@@ -42,7 +42,7 @@ const NewProperty = () => {
             baths: 1,
             squareFeet: 1000,
             propertyType: PropertyTypeEnum.Apartment,
-            address: "dfd",
+            address: "",
             city: "",
             state: "",
             country: "",

@@ -69,13 +69,16 @@ const Map = () => {
     </div>
   );*/
   
-  if (isLoading || isFetching) { <LoadingComponent />}
-  if (isError)  {<ErrorState error={error} onRetry={refetch} />}
-  if (!properties) { <Not_Found />}
+      if (isLoading || isFetching) {
+        <div className="absolute inset-0 z-999 flex items-center justify-center">
+          <LoadingComponent/>
+        </div>
+      }
+
   return (
     <div className='basis-5/12 h-screen grow relative rounded-xl'>
       <div
-        className='map-container rounded-xl '
+        className={`${(isLoading || isFetching || isError) ? "hidden" : "map-container rounded-xl"}`}
         ref={mapContainerRef}
         style={{
           width: "100%",
@@ -84,6 +87,23 @@ const Map = () => {
       > </div>
 
 
+
+      { (isLoading || isFetching) ?
+        <div className="absolute inset-0 z-999 flex items-center justify-center">
+          <LoadingComponent/>
+        </div>
+      :
+      isError ?
+      
+        <div className="absolute inset-0 z-999 flex items-center justify-center">
+          <ErrorState error={error} onRetry={refetch} />
+        </div>
+      :
+      !properties &&
+        <div className="absolute inset-0 z-999 flex items-center justify-center">
+          <Not_Found />
+        </div>
+      }
     </div>
   )
 }
